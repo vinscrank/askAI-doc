@@ -1,0 +1,15 @@
+.DS_Store
+.vscode/
+
+# Python
+backend/venv/
+backend/__pycache__/
+**/__pycache__/
+*.pyc
+
+# Env
+backend/.env
+
+# Uploads (user content, not source)
+backend/uploads/*
+!backend/uploads/.gitkeep
