@@ -5,7 +5,7 @@ load_dotenv()
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
-from app.api import documents
+from app.api import ask, documents
 from app.services.qdrant_service import ensure_collection
 
 
@@ -17,6 +17,7 @@ async def lifespan(_app: FastAPI):
 
 app = FastAPI(title="AskDocs AI", lifespan=lifespan)
 app.include_router(documents.router)
+app.include_router(ask.router)
 
 
 @app.get("/health")

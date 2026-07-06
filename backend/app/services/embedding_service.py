@@ -16,3 +16,8 @@ def embed_chunks(chunks: list[dict]) -> list[dict]:
         chunk["embedding"] = item.embedding
 
     return chunks
+
+# Embed a query, stringa input, return a list of floats
+def embed_query(text: str) -> list[float]:
+    response = client.embeddings.create(model=EMBEDDING_MODEL, input=[text])
+    return response.data[0].embedding

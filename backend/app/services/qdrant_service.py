@@ -1,8 +1,7 @@
 from qdrant_client import QdrantClient
-from qdrant_client.models import Distance, VectorParams
+from qdrant_client.models import Distance, FieldCondition, Filter, MatchValue, PointStruct, VectorParams
 import os
 import uuid
-from qdrant_client.models import PointStruct
 
 
 QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
@@ -37,3 +36,39 @@ def upsert_chunks(chunks: list[dict]) -> int:
 
     client.upsert(collection_name=COLLECTION_NAME, wait=True, points=points)
     return len(points)
+
+from qdrant_client.models import Distance, FieldCondition, Filter, MatchValue, PointStruct, VectorParams
+
+def search_similar(
+    query_vector: list[float],
+    top_k: int = 5,
+    document_id: str | None = None,
+) -> list[dict]:
+    query_filter = None
+    if document_id is not None:
+        query_filter = Filter(
+            must=[
+                FieldCondition(
+                    key="document_id",
+                    match=MatchValue(value=document_id),
+                )
+            ]
+        )
+
+    response = client.query_points(
+        collection_name=COLLECTION_NAME,
+        query=query_vector,
+        query_filter=query_filter,
+        limit=top_k,
+        with_payload=True,
+    )
+
+    return [
+        {
+            "document_id": hit.payload["document_id"],
+            "chunk_index": hit.payload["chunk_index"],
+            "text": hit.payload["text"],
+            "score": hit.score,
+        }
+        for hit in response.points
+    ]
