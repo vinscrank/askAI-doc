@@ -8,6 +8,8 @@ from pypdf import PdfReader
 UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "uploads")
 ALLOWED_EXTENSIONS = {".txt", ".pdf", ".docx"}
 
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+
 
 def save_upload_file(file: UploadFile) -> tuple[str, str]:
     ext = os.path.splitext(file.filename)[1].lower()

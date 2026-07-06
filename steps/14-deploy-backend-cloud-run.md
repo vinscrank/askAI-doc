@@ -78,7 +78,7 @@ Deve rispondere con JSON (lista collection, anche vuota).
 
 ### 6.1 Dockerfile
 
-Già presente in `backend/Dockerfile`:
+Già presente in `backend/Dockerfile`. Deve includere la cartella `uploads/` (Cloud Run non la crea da solo):
 
 ```dockerfile
 FROM python:3.12-slim
@@ -90,9 +90,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app ./app
 
+RUN mkdir -p uploads
+
 ENV PORT=8080
 CMD exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT}
 ```
+
+In alternativa (o in aggiunta), `document_service.py` crea la cartella all'avvio con `os.makedirs(UPLOAD_DIR, exist_ok=True)`.
 
 Cloud Run imposta `PORT=8080` automaticamente.
 
