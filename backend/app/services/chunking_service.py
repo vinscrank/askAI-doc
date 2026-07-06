@@ -9,6 +9,7 @@ CHUNK_OVERLAP_TOKENS = 60
 def chunk_text(
     text: str,
     document_id: str,
+    filename: str | None = None,
     chunk_size: int = CHUNK_SIZE_TOKENS,
     overlap: int = CHUNK_OVERLAP_TOKENS,
 ) -> list[dict]:
@@ -28,6 +29,7 @@ def chunk_text(
             "chunk_index": chunk_index,
             "text": chunk_text_value,
             "num_tokens": len(chunk_tokens),
+            "filename": filename,
         })
 
         if end == len(tokens):

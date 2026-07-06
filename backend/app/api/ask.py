@@ -11,11 +11,16 @@ class AskRequest(BaseModel):
     question: str
     document_id: str
 
+class SourceItem(BaseModel):
+    chunk_index: int
+    text_preview: str
+    score: float
+
 class AskResponse(BaseModel):
     question: str
     document_id: str
     answer: str
-    retrieved_chunks: list[dict]
+    sources: list[SourceItem]
 
 
 
@@ -33,5 +38,15 @@ def ask(body: AskRequest):
         question=body.question,
         document_id=body.document_id,
         answer=answer,
-        retrieved_chunks=chunks,
+        sources=_format_sources(chunks),
     )
+
+def _format_sources(chunks: list[dict], preview_length: int = 200) -> list[SourceItem]:
+    return [
+        SourceItem(
+            chunk_index=chunk["chunk_index"],
+            text_preview=chunk["text"][:preview_length],
+            score=chunk["score"],
+        )
+        for chunk in chunks
+    ]

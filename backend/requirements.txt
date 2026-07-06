@@ -5,3 +5,5 @@ python-dotenv
 qdrant-client
 tiktoken
 openai
+pypdf
+python-docx

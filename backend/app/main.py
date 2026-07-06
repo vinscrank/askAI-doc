@@ -5,6 +5,8 @@ load_dotenv()
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from app.api import ask, documents
 from app.services.qdrant_service import ensure_collection
 
@@ -16,6 +18,14 @@ async def lifespan(_app: FastAPI):
 
 
 app = FastAPI(title="AskDocs AI", lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(documents.router)
 app.include_router(ask.router)
 
