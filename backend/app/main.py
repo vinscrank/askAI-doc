@@ -21,7 +21,10 @@ app = FastAPI(title="AskDocs AI", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[
+        "http://localhost:3000",
+        "https://ask-ai-doc.vercel.app",
+    ],
     allow_methods=["*"],
     allow_headers=["*"],
 )

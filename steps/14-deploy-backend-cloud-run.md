@@ -4,17 +4,22 @@
 
 ## 1. Obiettivo dello step
 
-Mettere online il backend FastAPI su **Google Cloud Run** collegato a un database vettoriale **Qdrant Cloud**. Alla fine avrai un URL pubblico (es. `https://askdocs-api-xxxxx-ew.a.run.app`) con `/health`, `/documents` e `/ask` funzionanti.
+Mettere online il backend FastAPI su **Google Cloud Run** collegato a un database vettoriale **Qdrant Cloud**. Alla fine avrai un URL pubblico con `/health`, `/documents` e `/ask` funzionanti.
+
+**URL produzione (progetto):**
+- Backend: `https://askdocs-api-111757801670.europe-west1.run.app`
+- Frontend: `https://ask-ai-doc.vercel.app`
 
 ## 2. Architettura deploy
 
 ```
-Browser / Frontend (Vercel, step 15)
+Browser → https://ask-ai-doc.vercel.app (Frontend Vercel)
         │
         ▼
-Cloud Run (FastAPI)  ──────►  Qdrant Cloud (vector DB)
+https://askdocs-api-111757801670.europe-west1.run.app (Cloud Run)
         │
-        └──────────────────►  OpenAI API (embeddings + chat)
+        ├──► Qdrant Cloud (vector DB)
+        └──► OpenAI API (embeddings + chat)
 ```
 
 | Componente | Dove gira | Perché |
@@ -32,7 +37,7 @@ In locale usavi Docker per Qdrant (`localhost:6333`). In produzione Qdrant è un
 - **Qdrant Cloud vs Docker locale**: in locale Qdrant non ha autenticazione; in cloud ogni richiesta richiede `QDRANT_API_KEY`.
 - **Variabili d'ambiente**: su Cloud Run non esiste il file `.env` nel container — le variabili le inietti al deploy (`--env-vars-file` o Secret Manager).
 - **Secret Manager**: alternativa sicura per API key (non passarle in chiaro nel terminale se puoi evitarlo).
-- **CORS**: dopo il deploy frontend, aggiungi l'URL Vercel in `allow_origins` in `main.py`.
+- **CORS**: il browser blocca le richieste cross-origin se il backend non autorizza l'origin del frontend. Aggiungi l'URL Vercel in `allow_origins` in `main.py` (senza slash finale).
 
 ## 4. Prerequisiti
 
@@ -197,7 +202,7 @@ gcloud run deploy askdocs-api \
 Al termine del deploy, gcloud stampa l'URL del servizio:
 
 ```bash
-curl https://askdocs-api-xxxxx-ew.a.run.app/health
+curl https://askdocs-api-111757801670.europe-west1.run.app/health
 ```
 
 Risposta attesa: `{"status":"ok"}`
@@ -207,7 +212,7 @@ Risposta attesa: `{"status":"ok"}`
 Apri nel browser:
 
 ```
-https://askdocs-api-xxxxx-ew.a.run.app/docs
+https://askdocs-api-111757801670.europe-west1.run.app/docs
 ```
 
 ### 8.3 Test pipeline completa
@@ -226,27 +231,55 @@ gcloud run services describe askdocs-api --region europe-west1 --format="yaml(sp
 
 Dopo un upload, nella dashboard Qdrant Cloud la collection `askdocs_chunks` deve avere `points_count > 0`.
 
-## 9. CORS per il frontend (step 15)
+## 9. CORS — collegare frontend Vercel al backend
 
-Quando deployi Next.js su Vercel, aggiorna `backend/app/main.py`:
+Il frontend su Vercel chiama il backend su Cloud Run da un dominio diverso. Senza CORS il browser blocca upload e `/ask`.
+
+### 9.1 Backend — `backend/app/main.py`
 
 ```python
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "https://tuo-progetto.vercel.app",
+        "https://ask-ai-doc.vercel.app",
     ],
     allow_methods=["*"],
     allow_headers=["*"],
 )
 ```
 
-Poi ridistribuisci:
+Regole:
+- L'origin è **solo il dominio del frontend**, non l'URL del backend
+- **Niente slash finale**: `https://ask-ai-doc.vercel.app` (non `.../`)
+- Dopo ogni modifica CORS serve un **redeploy** del backend
 
 ```bash
+cd backend
 gcloud run deploy askdocs-api --source . --region europe-west1
 ```
+
+### 9.2 Frontend — variabile su Vercel
+
+In Vercel → Project → Settings → Environment Variables:
+
+```
+NEXT_PUBLIC_API_URL=https://askdocs-api-111757801670.europe-west1.run.app
+```
+
+In locale, stesso valore in `front/nextjs/.env.local`:
+
+```
+NEXT_PUBLIC_API_URL=https://askdocs-api-111757801670.europe-west1.run.app
+```
+
+Dopo aver aggiunto o cambiato la variabile su Vercel, fai **Redeploy**.
+
+### 9.3 Verifica CORS
+
+1. Apri [https://ask-ai-doc.vercel.app](https://ask-ai-doc.vercel.app)
+2. Carica un documento
+3. Se vedi errore CORS in DevTools → controlla che l'origin nel messaggio di errore sia in `allow_origins` e che il backend sia stato ridistribuito
 
 ## 10. Limitazioni MVP da conoscere
 
