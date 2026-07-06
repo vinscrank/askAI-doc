@@ -7,7 +7,10 @@ import uuid
 QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
 COLLECTION_NAME = os.getenv("QDRANT_COLLECTION", "askdocs_chunks")
 
-client = QdrantClient(url=QDRANT_URL)
+client = QdrantClient(
+    url=QDRANT_URL,
+    api_key=os.getenv("QDRANT_API_KEY"),
+)
 
 def ensure_collection(vector_size: int = 1536):
     collections = [c.name for c in client.get_collections().collections]
