@@ -1,3 +1,7 @@
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -13,6 +17,7 @@ async def lifespan(_app: FastAPI):
 
 app = FastAPI(title="AskDocs AI", lifespan=lifespan)
 app.include_router(documents.router)
+
 
 @app.get("/health")
 def health():
