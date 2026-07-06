@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 from fastapi import APIRouter
 
-from app.services import embedding_service, qdrant_service
+from app.services import embedding_service, llm_service, qdrant_service
 
 router = APIRouter(prefix="/ask", tags=["ask"])
 
@@ -11,10 +11,10 @@ class AskRequest(BaseModel):
     question: str
     document_id: str
 
-
 class AskResponse(BaseModel):
     question: str
     document_id: str
+    answer: str
     retrieved_chunks: list[dict]
 
 
@@ -27,9 +27,11 @@ def ask(body: AskRequest):
         top_k=5,
         document_id=body.document_id,
     )
+    answer = llm_service.generate_answer(body.question, chunks)
 
     return AskResponse(
         question=body.question,
         document_id=body.document_id,
+        answer=answer,
         retrieved_chunks=chunks,
     )
