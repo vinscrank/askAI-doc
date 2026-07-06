@@ -5,17 +5,21 @@ import "@cyntler/react-doc-viewer/dist/index.css";
 const DocViewer = dynamic(() => import("@cyntler/react-doc-viewer"), { ssr: false });
 const getRenderers = () => import("@cyntler/react-doc-viewer").then((mod) => mod.DocViewerRenderers);
 const DocxPreview = dynamic(() => import("./DocxPreview"), { ssr: false });
+const TxtPreview = dynamic(() => import("./TxtPreview"), { ssr: false });
 
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import type { IDocument } from "@cyntler/react-doc-viewer";
 
-export default function DocumentPreview({ fileUrl, fileName }: { fileUrl: string; fileName: string }) {
+function DocumentPreview({ fileUrl, fileName }: { fileUrl: string; fileName: string }) {
     const [renderers, setRenderers] = useState<unknown[] | null>(null);
-    const isDocx = fileName.toLowerCase().endsWith(".docx");
+    const lowerName = fileName.toLowerCase();
+    const isDocx = lowerName.endsWith(".docx");
+    const isTxt = lowerName.endsWith(".txt");
+    const usesCustomRenderer = isDocx || isTxt;
 
     useEffect(() => {
-        if (!isDocx) getRenderers().then(setRenderers);
-    }, [isDocx]);
+        if (!usesCustomRenderer) getRenderers().then(setRenderers);
+    }, [usesCustomRenderer]);
 
     if (isDocx) {
         return (
@@ -25,12 +29,20 @@ export default function DocumentPreview({ fileUrl, fileName }: { fileUrl: string
         );
     }
 
+    if (isTxt) {
+        return (
+            <div className="rounded-xl overflow-hidden border border-slate-800 h-full">
+                <TxtPreview fileUrl={fileUrl} />
+            </div>
+        );
+    }
+
     if (!renderers) return null;
 
     const documents: IDocument[] = [{ uri: fileUrl, fileName }];
 
     return (
-        <div className="rounded-xl overflow-hidden border border-slate-800 h-full">
+        <div data-lenis-prevent className="rounded-xl overflow-hidden border border-slate-800 h-full">
             <DocViewer
                 documents={documents}
                 pluginRenderers={renderers as never}
@@ -50,3 +62,5 @@ export default function DocumentPreview({ fileUrl, fileName }: { fileUrl: string
         </div>
     );
 }
+
+export default memo(DocumentPreview);

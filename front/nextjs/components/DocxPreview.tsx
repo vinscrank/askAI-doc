@@ -33,8 +33,8 @@ export default function DocxPreview({ fileUrl }: { fileUrl: string }) {
     }
 
     return (
-        <div className="h-full overflow-auto bg-white">
-            <div ref={containerRef} className="w-max" />
+        <div data-lenis-prevent className="h-full overflow-auto overscroll-contain bg-white [scrollbar-gutter:stable]">
+            <div ref={containerRef} className="w-max min-w-full" />
         </div>
     );
 }
