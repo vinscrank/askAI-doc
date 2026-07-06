@@ -98,6 +98,15 @@ CMD exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT}
 
 In alternativa (o in aggiunta), `document_service.py` crea la cartella all'avvio con `os.makedirs(UPLOAD_DIR, exist_ok=True)`.
 
+    client.create_payload_index(
+        collection_name=COLLECTION_NAME,
+        field_name="document_id",
+        field_schema=PayloadSchemaType.KEYWORD,
+    )
+```
+
+Qdrant Cloud **richiede** questo indice per filtrare su `document_id` in `/ask`. In Docker locale spesso funziona anche senza, ma in cloud no.
+
 Cloud Run imposta `PORT=8080` automaticamente.
 
 ### 6.2 Client Qdrant con API key

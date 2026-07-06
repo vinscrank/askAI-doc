@@ -1,5 +1,13 @@
 from qdrant_client import QdrantClient
-from qdrant_client.models import Distance, FieldCondition, Filter, MatchValue, PointStruct, VectorParams
+from qdrant_client.models import (
+    Distance,
+    FieldCondition,
+    Filter,
+    MatchValue,
+    PayloadSchemaType,
+    PointStruct,
+    VectorParams,
+)
 import os
 import uuid
 
@@ -19,6 +27,12 @@ def ensure_collection(vector_size: int = 1536):
             collection_name=COLLECTION_NAME,
             vectors_config=VectorParams(size=vector_size, distance=Distance.COSINE),
         )
+    client.create_payload_index(
+        collection_name=COLLECTION_NAME,
+        field_name="document_id",
+        field_schema=PayloadSchemaType.KEYWORD,
+    )
+
 def upsert_chunks(chunks: list[dict]) -> int:
     if not chunks:
         return 0
@@ -40,8 +54,6 @@ def upsert_chunks(chunks: list[dict]) -> int:
 
     client.upsert(collection_name=COLLECTION_NAME, wait=True, points=points)
     return len(points)
-
-from qdrant_client.models import Distance, FieldCondition, Filter, MatchValue, PointStruct, VectorParams
 
 def search_similar(
     query_vector: list[float],
