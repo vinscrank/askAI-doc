@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     return (
         <>
             <AppNavbar />
-            <main className="min-h-screen pt-24 pb-6 px-4 md:px-16 lg:px-24 xl:px-32">
+            <main className="min-h-dvh pt-[3.75rem] pb-8 px-3 sm:px-6 md:px-10 lg:px-16 xl:px-20">
                 {children}
             </main>
         </>

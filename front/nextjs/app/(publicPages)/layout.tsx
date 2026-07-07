@@ -1,5 +1,6 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import LenisScroll from "@/components/LenisScroll";
 import React from "react";
 
 export const metadata = {
@@ -10,6 +11,7 @@ export const metadata = {
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
         <>
+            <LenisScroll />
             <Navbar />
             {children}
             <Footer />
