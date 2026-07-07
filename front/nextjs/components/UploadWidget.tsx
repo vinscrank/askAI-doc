@@ -21,7 +21,7 @@ export default function UploadWidget({ onUploaded }: { onUploaded?: () => void }
             onUploaded?.();
             router.push(`/app/${encodeURIComponent(res.document_id)}`);
         } catch {
-            setError("Non sono riuscito a leggere questo file. Prova con un altro documento.");
+            setError("Could not read this file. Try another document.");
             setIsUploading(false);
         } finally {
             if (fileInputRef.current) fileInputRef.current.value = "";
@@ -49,9 +49,9 @@ export default function UploadWidget({ onUploaded }: { onUploaded?: () => void }
                 )}
                 <div className="text-center">
                     <p className="font-medium">
-                        {isUploading ? "Un attimo, sto leggendo il documento..." : "Trascina qui il tuo documento, o clicca per sceglierlo"}
+                        {isUploading ? "Reading your document..." : "Drop your document here, or click to browse"}
                     </p>
-                    <p className="text-slate-500 text-sm mt-1">Formati supportati: .txt, .pdf, .docx</p>
+                    <p className="text-slate-500 text-sm mt-1">Supported formats: .txt, .pdf, .docx</p>
                 </div>
                 <input
                     ref={fileInputRef}

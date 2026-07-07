@@ -4,9 +4,9 @@ import { motion } from "motion/react";
 
 export default function HeroSection() {
     const specialFeatures = [
-        "Nessuna configurazione",
-        "Risposte con la fonte citata",
-        "Pronto in pochi secondi",
+        "No setup required",
+        "Answers with cited sources",
+        "Ready in seconds",
     ];
 
     return (
@@ -19,8 +19,8 @@ export default function HeroSection() {
                 viewport={{ once: true }}
                 transition={{ type: "spring", stiffness: 240, damping: 70, mass: 1 }}
             >
-                Fai domande ai tuoi{" "}
-                <span className="move-gradient px-3 rounded-xl text-nowrap">documenti.</span>
+                Ask questions about your{" "}
+                <span className="move-gradient px-3 rounded-xl text-nowrap">documents.</span>
             </motion.h1>
             <motion.p className="text-base text-center text-slate-200 max-w-lg mt-6"
                 initial={{ y: 50, opacity: 0 }}
@@ -28,7 +28,7 @@ export default function HeroSection() {
                 viewport={{ once: true }}
                 transition={{ delay: 0.2, type: "spring", stiffness: 320, damping: 70, mass: 1 }}
             >
-                Carica un file, poni una domanda e ottieni una risposta chiara, con il passaggio esatto da cui arriva.
+                Upload a file, ask a question, and get a clear answer with the exact passage it came from.
             </motion.p>
             <motion.div className="flex items-center gap-4 mt-8"
                 initial={{ y: 50, opacity: 0 }}
@@ -37,7 +37,7 @@ export default function HeroSection() {
                 transition={{ type: "spring", stiffness: 320, damping: 70, mass: 1 }}
             >
                 <a href="#upload" className="flex items-center bg-pink-600 hover:bg-pink-700 text-white rounded-full px-7 h-11">
-                    Carica un documento
+                    Upload a document
                 </a>
             </motion.div>
 

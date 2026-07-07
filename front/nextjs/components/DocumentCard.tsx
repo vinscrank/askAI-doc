@@ -72,12 +72,12 @@ export default function DocumentCard({ doc, index, onRenamed }: { doc: DocumentI
                         <>
                             <div className="flex items-start justify-between gap-2">
                                 <p className="font-medium leading-snug break-all line-clamp-2" title={doc.filename ?? undefined}>
-                                    {doc.filename ?? "Documento senza nome"}
+                                    {doc.filename ?? "Untitled document"}
                                 </p>
                                 <button
                                     onClick={() => { setDraftName(doc.filename ?? ""); setIsEditing(true); }}
                                     className="text-slate-600 hover:text-pink-500 transition shrink-0 opacity-0 group-hover:opacity-100"
-                                    aria-label="Rinomina documento"
+                                    aria-label="Rename document"
                                 >
                                     <PencilIcon className="size-3.5" />
                                 </button>
@@ -96,7 +96,7 @@ export default function DocumentCard({ doc, index, onRenamed }: { doc: DocumentI
                 className="flex items-center justify-center gap-2 bg-pink-600 hover:bg-pink-700 active:scale-95 transition-all rounded-full py-2.5 text-sm mt-auto"
             >
                 <MessageSquareIcon className="size-4" />
-                Fai una domanda
+                Ask a question
             </Link>
         </motion.div>
     );

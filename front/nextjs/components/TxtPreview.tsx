@@ -27,7 +27,7 @@ export default function TxtPreview({ fileUrl }: { fileUrl: string }) {
     if (error) {
         return (
             <div className="flex items-center justify-center h-full text-slate-500 text-sm p-6 text-center">
-                Non riesco a mostrare l&apos;anteprima di questo documento.
+                Could not preview this document.
             </div>
         );
     }

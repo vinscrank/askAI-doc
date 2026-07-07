@@ -13,8 +13,8 @@ export default function UploadSection() {
                     transition={{ type: "spring", stiffness: 280, damping: 70, mass: 1 }}
                     className="text-center mb-8"
                 >
-                    <h2 className="text-2xl md:text-3xl font-semibold">Provalo subito, senza registrazione</h2>
-                    <p className="text-slate-400 mt-2">Carica un documento e inizia a fargli domande in pochi secondi.</p>
+                    <h2 className="text-2xl md:text-3xl font-semibold">Try it now, no sign-up required</h2>
+                    <p className="text-slate-400 mt-2">Upload a document and start asking questions in seconds.</p>
                 </motion.div>
 
                 <motion.div

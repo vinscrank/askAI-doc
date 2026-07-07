@@ -16,7 +16,7 @@ export default function DashboardPage() {
             const docs = await listDocuments();
             setDocuments(docs);
         } catch {
-            setError("Non riesco a raggiungere il server. Riprova tra poco.");
+            setError("Could not reach the server. Please try again shortly.");
         } finally {
             setIsLoadingDocs(false);
         }
@@ -33,9 +33,9 @@ export default function DashboardPage() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ type: "spring", stiffness: 280, damping: 70, mass: 1 }}
             >
-                <h1 className="text-3xl md:text-4xl font-semibold">I tuoi documenti</h1>
+                <h1 className="text-3xl md:text-4xl font-semibold">Your documents</h1>
                 <p className="text-slate-400 mt-2 max-w-xl">
-                    Carica un nuovo documento o riprendi una conversazione già iniziata.
+                    Upload a new document or continue a previous conversation.
                 </p>
             </motion.div>
 
@@ -55,9 +55,9 @@ export default function DashboardPage() {
 
             <div className="mt-14">
                 {isLoadingDocs ? (
-                    <p className="text-slate-500">Caricamento...</p>
+                    <p className="text-slate-500">Loading...</p>
                 ) : documents.length === 0 ? (
-                    <p className="text-slate-500">Non hai ancora caricato nessun documento.</p>
+                    <p className="text-slate-500">You haven&apos;t uploaded any documents yet.</p>
                 ) : (
                     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {documents.map((doc, index) => (

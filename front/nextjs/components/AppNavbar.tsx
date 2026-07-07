@@ -18,7 +18,7 @@ export default function AppNavbar() {
 
             <div className="flex items-center gap-6">
                 <Link href="/app" className={`hover:text-pink-500 transition ${pathname === "/app" ? "text-pink-500" : "text-slate-300"}`}>
-                    I tuoi documenti
+                    Your documents
                 </Link>
                 <Link href="/" className="text-slate-300 hover:text-pink-500 transition">
                     Home
