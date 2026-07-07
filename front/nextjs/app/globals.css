@@ -20,6 +20,12 @@ button {
     height: calc(100dvh - 4.5rem);
 }
 
+@media (max-width: 1023px) {
+    .document-chat-shell {
+        height: 100dvh;
+    }
+}
+
 .chat-messages-scroll {
     overflow-y: auto;
     overflow-x: hidden;

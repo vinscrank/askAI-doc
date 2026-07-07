@@ -9,6 +9,7 @@ type ChatComposerProps = {
     onSubmit: () => void;
     disabled?: boolean;
     placeholder?: string;
+    className?: string;
 };
 
 export default function ChatComposer({
@@ -17,6 +18,7 @@ export default function ChatComposer({
     onSubmit,
     disabled = false,
     placeholder = "Ask a question about this document...",
+    className = "",
 }: ChatComposerProps) {
     const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -37,7 +39,7 @@ export default function ChatComposer({
     return (
         <form
             onSubmit={handleSubmit}
-            className="shrink-0 border-t border-slate-800/80 bg-slate-950/90 backdrop-blur-md px-3 py-3 sm:px-4 sm:py-4"
+            className={`shrink-0 border-t border-slate-800/80 bg-slate-950/90 backdrop-blur-md px-3 py-3 sm:px-4 sm:py-4 ${className}`}
         >
             <div className="flex items-end gap-2 sm:gap-3 max-w-3xl mx-auto w-full">
                 <div className="flex-1 rounded-2xl border border-slate-700/80 bg-slate-900/80 focus-within:border-pink-500/60 focus-within:ring-2 focus-within:ring-pink-500/15 transition-shadow">
