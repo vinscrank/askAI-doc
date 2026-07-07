@@ -9,17 +9,10 @@ import DocumentCard from "@/components/DocumentCard";
 export default function DashboardPage() {
     const [documents, setDocuments] = useState<DocumentItem[]>([]);
     const [isLoadingDocs, setIsLoadingDocs] = useState(true);
-    const [error, setError] = useState<string | null>(null);
 
-    const refreshDocuments = useCallback(async () => {
-        try {
-            const docs = await listDocuments();
-            setDocuments(docs);
-        } catch {
-            setError("Could not reach the server. Please try again shortly.");
-        } finally {
-            setIsLoadingDocs(false);
-        }
+    const refreshDocuments = useCallback(() => {
+        setDocuments(listDocuments());
+        setIsLoadingDocs(false);
     }, []);
 
     useEffect(() => {
@@ -27,31 +20,25 @@ export default function DashboardPage() {
     }, [refreshDocuments]);
 
     return (
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-5xl mx-auto pt-4 sm:pt-6">
             <motion.div
                 initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ type: "spring", stiffness: 280, damping: 70, mass: 1 }}
             >
                 <h1 className="text-3xl md:text-4xl font-semibold">Your documents</h1>
-                <p className="text-slate-400 mt-2 max-w-xl">
+                <p className="text-slate-400 mt-3 max-w-xl">
                     Upload a new document or continue a previous conversation.
                 </p>
             </motion.div>
 
-            <motion.div className="mt-10"
+            <motion.div className="mt-12"
                 initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.1, type: "spring", stiffness: 280, damping: 70, mass: 1 }}
             >
                 <UploadWidget onUploaded={refreshDocuments} />
             </motion.div>
-
-            {error && (
-                <p className="mt-4 text-sm text-pink-500 bg-pink-950/30 border border-pink-900 rounded-lg px-4 py-3">
-                    {error}
-                </p>
-            )}
 
             <div className="mt-14">
                 {isLoadingDocs ? (

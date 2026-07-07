@@ -11,6 +11,7 @@ backend/__pycache__/
 backend/.env
 backend/.env.local
 backend/env.yaml
+backend/users.db
 
 # Uploads (user content, not source)
 backend/uploads/*

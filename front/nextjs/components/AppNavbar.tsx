@@ -14,7 +14,7 @@ export default function AppNavbar() {
 
     return (
         <motion.nav
-            className={`fixed top-0 z-50 flex items-center justify-between w-full py-4 px-6 md:px-16 lg:px-24 xl:px-32 backdrop-blur bg-black/40 border-b border-slate-900 ${
+            className={`fixed top-0 z-50 flex items-center justify-between w-full min-h-[4.5rem] py-5 px-6 md:px-16 lg:px-24 xl:px-32 backdrop-blur bg-black/40 border-b border-slate-900 ${
                 onDocumentChat ? "hidden lg:flex" : "flex"
             }`}
             initial={{ y: -60, opacity: 0 }}
@@ -25,7 +25,7 @@ export default function AppNavbar() {
                 AskDocs AI
             </Link>
 
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-8 md:gap-10">
                 <Link
                     href="/app"
                     className={`hover:text-pink-500 transition ${pathname === "/app" ? "text-pink-500" : "text-slate-300"}`}

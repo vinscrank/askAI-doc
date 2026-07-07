@@ -17,13 +17,23 @@ button {
 }
 
 .document-chat-shell {
-    height: calc(100dvh - 4.5rem);
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 @media (max-width: 1023px) {
     .document-chat-shell {
         height: 100dvh;
+        flex: none;
     }
+}
+
+.doc-viewer-host,
+.doc-viewer-host > div {
+    height: 100%;
+    width: 100%;
 }
 
 .chat-messages-scroll {

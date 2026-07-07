@@ -1,4 +1,5 @@
 import { AskResponse, DocumentItem, UploadResponse } from "@/types";
+import { addLocalDocument, getLocalDocuments, updateLocalDocumentFilename } from "@/lib/localDocuments";
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
@@ -23,12 +24,17 @@ export async function uploadDocument(file: File): Promise<UploadResponse> {
         body: formData,
     });
 
-    return handleResponse<UploadResponse>(res);
+    const data = await handleResponse<UploadResponse>(res);
+    addLocalDocument({
+        document_id: data.document_id,
+        filename: data.filename,
+        num_chunks: data.num_chunks,
+    });
+    return data;
 }
 
-export async function listDocuments(): Promise<DocumentItem[]> {
-    const res = await fetch(`${API_URL}/documents`, { cache: "no-store" });
-    return handleResponse<DocumentItem[]>(res);
+export function listDocuments(): DocumentItem[] {
+    return getLocalDocuments();
 }
 
 export async function renameDocument(documentId: string, filename: string): Promise<void> {
@@ -39,6 +45,7 @@ export async function renameDocument(documentId: string, filename: string): Prom
     });
 
     await handleResponse<{ document_id: string; filename: string }>(res);
+    updateLocalDocumentFilename(documentId, filename);
 }
 
 export async function askQuestion(documentId: string, question: string): Promise<AskResponse> {

@@ -22,27 +22,25 @@ function DocumentPreview({ fileUrl, fileName }: { fileUrl: string; fileName: str
     }, [usesCustomRenderer]);
 
     if (isDocx) {
-        return (
-            <div className="rounded-xl overflow-hidden border border-slate-800 h-full">
-                <DocxPreview fileUrl={fileUrl} />
-            </div>
-        );
+        return <DocxPreview fileUrl={fileUrl} />;
     }
 
     if (isTxt) {
+        return <TxtPreview fileUrl={fileUrl} />;
+    }
+
+    if (!renderers) {
         return (
-            <div className="rounded-xl overflow-hidden border border-slate-800 h-full">
-                <TxtPreview fileUrl={fileUrl} />
+            <div className="flex h-full w-full items-center justify-center text-sm text-slate-500">
+                Loading preview...
             </div>
         );
     }
-
-    if (!renderers) return null;
 
     const documents: IDocument[] = [{ uri: fileUrl, fileName }];
 
     return (
-        <div data-lenis-prevent className="rounded-xl overflow-hidden border border-slate-800 h-full">
+        <div data-lenis-prevent className="doc-viewer-host h-full w-full">
             <DocViewer
                 documents={documents}
                 pluginRenderers={renderers as never}
@@ -51,13 +49,13 @@ function DocumentPreview({ fileUrl, fileName }: { fileUrl: string; fileName: str
                 }}
                 theme={{
                     primary: "#db2777",
-                    secondary: "#0f172a",
-                    tertiary: "#1e293b",
+                    secondary: "#020617",
+                    tertiary: "#0f172a",
                     textPrimary: "#f1f5f9",
                     textSecondary: "#94a3b8",
                     textTertiary: "#f1f5f9",
                 }}
-                style={{ height: "100%" }}
+                style={{ height: "100%", width: "100%" }}
             />
         </div>
     );

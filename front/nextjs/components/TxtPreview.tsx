@@ -26,15 +26,23 @@ export default function TxtPreview({ fileUrl }: { fileUrl: string }) {
 
     if (error) {
         return (
-            <div className="flex items-center justify-center h-full text-slate-500 text-sm p-6 text-center">
+            <div className="flex h-full w-full items-center justify-center p-8 text-center text-sm text-slate-500">
                 Could not preview this document.
             </div>
         );
     }
 
+    if (text === null) {
+        return (
+            <div className="flex h-full w-full items-center justify-center p-8 text-sm text-slate-500">
+                Loading preview...
+            </div>
+        );
+    }
+
     return (
-        <div data-lenis-prevent className="h-full overflow-auto overscroll-contain bg-white">
-            <pre className="p-6 text-sm text-slate-800 whitespace-pre-wrap break-words font-sans">
+        <div data-lenis-prevent className="h-full w-full overflow-auto overscroll-contain bg-white">
+            <pre className="w-full p-6 sm:p-8 text-sm leading-relaxed text-slate-800 whitespace-pre-wrap break-words font-sans">
                 {text}
             </pre>
         </div>
